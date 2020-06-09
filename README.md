@@ -15,9 +15,9 @@
 
 Use Node.js and Express to build an API that performs CRUD operations on users.
 
-- Add a `.gitignore` file appropriate for `node.js` projects.
-- Add a new `package.json`.
-- Add a `server` script to `package.json` that runs the API using `nodemon`.
+- Add a `.gitignore` file appropriate for `node.js` projects. [done] npx gitignore node
+- Add a new `package.json`. [done] npm init -y
+- Add a `server` script to `package.json` that runs the API using `nodemon`. npm install -g nodemon
 
 ### Write endpoints
 
@@ -25,11 +25,11 @@ Add the code necessary to create a Web API and implement the following _endpoint
 
 | Method | URL            | Description                                                                                            |
 | ------ | -------------- | ------------------------------------------------------------------------------------------------------ |
-| POST   | /api/users     | Creates a user using the information sent inside the `request body`.                                   |
-| GET    | /api/users     | Returns an array users.                                                                                |
-| GET    | /api/users/:id | Returns the user object with the specified `id`.                                                       |
-| DELETE | /api/users/:id | Removes the user with the specified `id` and returns the deleted user.                                 |
-| PUT    | /api/users/:id | Updates the user with the specified `id` using data from the `request body`. Returns the modified user |
+| POST   | /api/users     | Creates a user using the information sent inside the `request body`. [done]                                  |
+| GET    | /api/users     | Returns an array users. [done]                                                                               |
+| GET    | /api/users/:id | Returns the user object with the specified `id`. [done]                                                      |
+| DELETE | /api/users/:id | Removes the user with the specified `id` and returns the deleted user.     [done]                            |
+| PUT    | /api/users/:id | Updates the user with the specified `id` using data from the `request body`. Returns the modified user [done] |
 
 #### User Schema
 
