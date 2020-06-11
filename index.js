@@ -44,7 +44,7 @@ server.post("/api/users", (req, res) => {
 	res.status(201).json(newUser)
 })
 
-server.put("/users/:id", (req, res) => {
+server.put("/api/users/:id", (req, res) => {
 	const user = db.getUserById(req.params.id)
 
 	// can't update a user that doesn't exist, so check first
@@ -69,7 +69,7 @@ server.delete("/api/users/:id", (req, res) => {
 	if (user) {
 		db.deleteUser(user.id)
 		// 204 is just a successful empty response,
-		// since we don't really have anything to return
+		res.json(user)
 		res.status(204).end()
 	} else {
 		res.status(404).json({
