@@ -7,6 +7,13 @@ const server = express();
 // to parse JSON request bodies.
 server.use(express.json())
 
+server.get('/', (req, res) => {
+    res.status(200).json({
+        message: "Server running"
+    })
+})
+
+
 server.post('/api/users', (req, res) => {
     if(!req.body.name || !req.body.bio){
         return res.status(400).json({
@@ -18,7 +25,7 @@ server.post('/api/users', (req, res) => {
             bio: req.body.bio
         })
         res.status(201).json
-        return newUser
+        return res.json(newUser)
     } else {
         res.status(500).json({
             errorMessage: "There was an error while saving the user to the database"
@@ -35,7 +42,7 @@ server.get('/api/users', (req, res) => {
             errorMessage: "The users information could not be retrieved."
         })
     } else {
-        return users
+        return res.json(users)
     }
 
 })
@@ -44,7 +51,7 @@ server.get('/api/users/:id', (req, res) => {
     const user = db.getUserById(req.params.id) //what are params
 
     if (user) {
-        return user
+        return res.json(user)
     } else if (!user) {
         return res.status(404).json({
             message: "The user with the specified ID does not exist."
@@ -65,7 +72,7 @@ server.delete('/api/users/:id', (req, res) => {
             message: "The user with the specified ID does not exist."
         })
     } else if (user){
-        db.deleteUser(user.id)
+        db.deleteUser(res.json(user))
         res.status(200).json
     } else {
         res.status(500).json({
@@ -92,8 +99,9 @@ server.put('/api/users/:id', (req, res) => {
             bio: req.body.bio || user.bio
         })
         res.status.json(200)
+        return res.json(updatedUser)
     } else {
-        res.status(500).json({
+        return res.status(500).json({
             errorMessage: "The user information could not be modified."
         })
     }
