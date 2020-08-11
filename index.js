@@ -65,49 +65,54 @@ server.get('/api/users/:id', (req, res) => {
 })
 
 server.delete('/api/users/:id', (req, res) => {
-    const user = db.getUserById(req.params.id)
-
-    if(!user){
-        return res.status(404).json({
-            message: "The user with the specified ID does not exist."
-        })
-    } else if (user){
-        db.deleteUser(res.json(user))
-        res.status(200).json
-    } else {
+    db.getUserById(req.params.id)
+    .then(user => {
+        if (!user) {
+            res.status(404).json({
+                errorMessage: "User does not exist"
+            })
+        } else {
+            db.deleteUser(req.params.id)
+            .then(user => {
+                res.status(200).json(user)
+            })
+            .catch(err => {
+                res.status(500).json({
+                    errorMessage: "Error with the database"
+                })
+            })
+        }
+    })
+    .catch(err => {
         res.status(500).json({
-            errorMessage: "User could not be removed"
+            errorMessage: "Error with the database"
         })
-    }
+    })
 
 })
 
 server.put('/api/users/:id', (req, res) => {
-    const user = db.getUserById(req.params.id)
+    db.getUserById(req.params.id)
 
-    if(!user){
-        return res.status(404).json({
-            message: "The user with the specified ID does not exist."
-        })
-    } else if(!user.name || !user.bio){
-        return res.status(400).json({
-            errorMessage: "Please provide name and bio for the user"
-        })
-    } else if(user.name || user.bio){
-        const updatedUser = db.updateUser(user.id, {
-            name: req.body.name || user.name, //EXPLAIN
-            bio: req.body.bio || user.bio
-        })
-        res.status.json(200)
-        return res.json(updatedUser)
-    } else {
-        return res.status(500).json({
-            errorMessage: "The user information could not be modified."
-        })
-    }
+    .then(user => {
+        if (!user) {
+            res.status(404).json({
+                errorMessage: "User does not exist"
+            }) 
+        } else if (!req.body.name || req.body.bio) {
+            res.status(400).json({
+                errorMessage: "Please provide name and bio for the user"
+            })
+        } else {
+            db.updateUser(req.params.id, req.body)
+            .then(user => {
+                res.status(200).json(user)
+            })
+        }
+    })
 
 })
 
-server.listen(4000, () => {
-    console.log("********* server started on port 4000 *********")
+server.listen(4040, () => {
+    console.log("********* server started on port 4040 *********")
 })
